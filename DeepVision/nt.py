@@ -10,7 +10,7 @@ vision_table = None
 # nearestX (int)
 # nearestY (int)
 
-def init():
+def init(ip):
 	global vision_table
 	NetworkTables.initialize(server=ip)
 	vision_table = NetworkTables.getTable("SmartDashboard/Vision")

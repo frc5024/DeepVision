@@ -9,41 +9,36 @@ import requests
 if len(sys.argv) == 2:
 	roborio_address = sys.argv[1]
 else:
-	roborio_address = "http://roborio-5024-frc.local:1181"
+	roborio_address = "roborio-5024-frc.local"
 
-# Check for frameserver
-print("Checking for frameserver...")
-try:
-	requests.get("http://127.0.0.1/getframe.php")
-except:
-	print("FATAL! frameserver not found!")
-	exit(1)
 
 # check for roborio
+print("Checking for RoboRIO")
 try:
 	requests.get(roborio_address)
+	print("Found!")
 except:
 	print("FATAL! Roborio not found or cameraserver disabled!")
 	exit(1)
 
 # Init nt
-nt.init()
+nt.init(roborio_address)
 
 # init vars
-last_mode
+last_mode = None
 
 while True:
 	current_mode = nt.getMode()
 	
 	# Set camera settings
 	if current_mode != last_mode:
-		if current_mode == nt.robot_mode.sandstorm:
+		if current_mode == nt.robot_modes.sandstorm:
 			control.sandstorm()
-		elif current_mode == nt.robot_mode.teleop:
+		elif current_mode == nt.robot_modes.teleop:
 			control.teleop()
 	
 	# skip if in sandstorm (the drivers need to see)
-	if current_mode == nt.robot_mode.sandstorm:
+	if current_mode == nt.robot_modes.sandstorm:
 		last_mode = current_mode
 		continue
 	
