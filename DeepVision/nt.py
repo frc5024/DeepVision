@@ -18,9 +18,10 @@ def init(ip):
 def publish(data):
 	global vision_table
 	## publish the data
+	vision_table.putNumber("Motor", data)
 
 def getMode():
-	if bool(vision_table.getNumber("isTeleop", 0.0)):
+	if bool(vision_table.getNumber("isTeleop", 1.0)):
 		return robot_modes.teleop
 	else:
 		return robot_modes.sandstorm

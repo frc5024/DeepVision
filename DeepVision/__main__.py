@@ -5,17 +5,21 @@ import camera as camera
 import cameracontrol as control
 import sys
 import requests
+import cv2
+from grip import grip as grip
+from scipy.interpolate import interp1d
 
 if len(sys.argv) == 2:
 	roborio_address = sys.argv[1]
 else:
 	roborio_address = "roborio-5024-frc.local"
 
-
+m = interp1d([300, 600], [0,1])
+m2 = interp1d([0,299], [-1,0])
 # check for roborio
 print("Checking for RoboRIO")
 try:
-	requests.get(roborio_address)
+	requests.get("http://" + roborio_address + ":1181")
 	print("Found!")
 except:
 	print("FATAL! Roborio not found or cameraserver disabled!")
@@ -23,6 +27,11 @@ except:
 
 # Init nt
 nt.init(roborio_address)
+camera.init(roborio_address)
+
+# init pipeline
+pipeline = grip.GripPipeline()
+
 
 # init vars
 last_mode = None
@@ -43,13 +52,34 @@ while True:
 		continue
 	
 	# get frame
+	front_frame = cv2.resize(camera.getFront(), (600,400))
+	# back_frame = camera.getBack()
 	
 	# parse through grip
+	pipeline.process(front_frame)
 	
 	# get data
+	cnts = pipeline.filter_contours_output
+	try:
+		x1,_ = cv2.boxPoints(cv2.minAreaRect(cnts[0]))[0]
+		x2,_ = cv2.boxPoints(cv2.minAreaRect(cnts[1]))[0]
+	except:
+		continue
+	centre = (x1 + x2)/2
+	
+	if centre < 299 and centre > 1:
+		motor = m2(centre)
+	elif centre < 600 and centre > 300:
+		motor = m(centre)
+	
 	
 	# do stuff
+	# cv2.imshow("Front Cam", front_frame)
+	# cv2.imshow("Back Cam", back_frame)
 	
 	#publish
+	nt.publish(motor)
+	print(motor)
+	# print(centre)
 	
 	last_mode = current_mode

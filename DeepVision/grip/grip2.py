@@ -12,9 +12,9 @@ class GripPipeline:
         """initializes all values to presets or None if need to be set
         """
 
-        self.__hsl_threshold_hue = [48.561151079136685, 121.63822525597269]
-        self.__hsl_threshold_saturation = [153.64208633093526, 255.0]
-        self.__hsl_threshold_luminance = [100.65827338129496, 255.0]
+        self.__hsl_threshold_hue = [0.0, 180.0]
+        self.__hsl_threshold_saturation = [89.43345323741009, 255.0]
+        self.__hsl_threshold_luminance = [82.55395683453237, 255.0]
 
         self.hsl_threshold_output = None
 
@@ -28,17 +28,17 @@ class GripPipeline:
         self.convex_hulls_output = None
 
         self.__filter_contours_contours = self.convex_hulls_output
-        self.__filter_contours_min_area = 50.0
+        self.__filter_contours_min_area = 120.0
         self.__filter_contours_min_perimeter = 0.0
-        self.__filter_contours_min_width = 0.0
-        self.__filter_contours_max_width = 1000.0
-        self.__filter_contours_min_height = 0.0
-        self.__filter_contours_max_height = 1000.0
+        self.__filter_contours_min_width = 0
+        self.__filter_contours_max_width = 1000
+        self.__filter_contours_min_height = 0
+        self.__filter_contours_max_height = 1000
         self.__filter_contours_solidity = [0, 100]
-        self.__filter_contours_max_vertices = 1000000.0
-        self.__filter_contours_min_vertices = 0.0
-        self.__filter_contours_min_ratio = 0.0
-        self.__filter_contours_max_ratio = 1000.0
+        self.__filter_contours_max_vertices = 1000000
+        self.__filter_contours_min_vertices = 0
+        self.__filter_contours_min_ratio = 0
+        self.__filter_contours_max_ratio = 1000
 
         self.filter_contours_output = None
 
