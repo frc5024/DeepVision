@@ -14,7 +14,7 @@ class GripPipeline:
 
         self.__hsl_threshold_hue = [48.561151079136685, 121.63822525597269]
         self.__hsl_threshold_saturation = [153.64208633093526, 255.0]
-        self.__hsl_threshold_luminance = [174.28057553956833, 255.0]
+        self.__hsl_threshold_luminance = [114.65827338129496, 255.0]
 
         self.hsl_threshold_output = None
 
