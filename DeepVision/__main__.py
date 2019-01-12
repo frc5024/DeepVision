@@ -35,6 +35,11 @@ pipeline = grip.GripPipeline()
 
 # init vars
 last_mode = None
+cameraWidth = 600
+fov = 60
+degPerPixel = cameraWidth / fov
+
+
 
 while True:
 	current_mode = nt.getMode()
@@ -74,10 +79,8 @@ while True:
 			continue
 	centre = (x1 + x2)/2
 	
-	if centre < 299 and centre > 1:
-		rotation = m2(centre)
-	elif centre < 600 and centre > 300:
-		rotation = m(centre)
+	displacement = cameraWidth/2 - centre
+	angle = displacement/degPerPixel
 	
 	distance = (max(x1,x2) - min(x1,x2))
 	
@@ -87,7 +90,8 @@ while True:
 	# cv2.imshow("Back Cam", back_frame)
 	
 	#publish
-	nt.publish(rotation, distance)
+	print(angle)
+	nt.publish(angle)
 	# print(rotation, end="\r")
 	# print(centre)
 	
