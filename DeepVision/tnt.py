@@ -12,7 +12,7 @@ vision_table = None
 
 def init(ip):
 	global vision_table
-	NetworkTables.initialize(server=ip)
+	NetworkTables.initialize(server='10.50.24.2')
 	vision_table = NetworkTables.getTable("SmartDashboard/Vision")
 
 def publish(rotation, distance):

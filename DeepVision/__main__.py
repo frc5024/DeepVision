@@ -1,6 +1,6 @@
 print("Starting DeepVision")
 
-import nt as nt
+import tnt as nt
 import camera as camera
 import cameracontrol as control
 import sys
@@ -18,12 +18,12 @@ m = interp1d([300, 600], [0,1])
 m2 = interp1d([0,299], [-1,0])
 # check for roborio
 print("Checking for RoboRIO")
-try:
+"""try:
 	requests.get("http://" + roborio_address + ":1181")
 	print("Found!")
 except:
 	print("FATAL! Roborio not found or cameraserver disabled!")
-	exit(1)
+	exit(1)"""
 
 # Init nt
 nt.init(roborio_address)
@@ -90,8 +90,7 @@ while True:
 	# cv2.imshow("Back Cam", back_frame)
 	
 	#publish
-	print(angle)
-	nt.publish(angle)
+	nt.publish(angle,angle)
 	# print(rotation, end="\r")
 	# print(centre)
 	
