@@ -10,18 +10,18 @@
       <edu.wpi.grip.core.sockets.InputSocketImpl step="0" socket="1">
         <value>
           <double>48.561151079136685</double>
-          <double>115.49488054607508</double>
+          <double>121.63822525597269</double>
         </value>
       </edu.wpi.grip.core.sockets.InputSocketImpl>
       <edu.wpi.grip.core.sockets.InputSocketImpl step="0" socket="2">
         <value>
-          <double>89.43345323741009</double>
+          <double>153.64208633093526</double>
           <double>255.0</double>
         </value>
       </edu.wpi.grip.core.sockets.InputSocketImpl>
       <edu.wpi.grip.core.sockets.InputSocketImpl step="0" socket="3">
         <value>
-          <double>82.55395683453237</double>
+          <double>174.28057553956833</double>
           <double>255.0</double>
         </value>
       </edu.wpi.grip.core.sockets.InputSocketImpl>
@@ -41,7 +41,7 @@
     <edu.wpi.grip.core.Step name="Filter Contours">
       <edu.wpi.grip.core.sockets.InputSocketImpl step="3" socket="0"/>
       <edu.wpi.grip.core.sockets.InputSocketImpl step="3" socket="1">
-        <value>120.0</value>
+        <value>40.0</value>
       </edu.wpi.grip.core.sockets.InputSocketImpl>
       <edu.wpi.grip.core.sockets.InputSocketImpl step="3" socket="2">
         <value>0.0</value>
