@@ -5,18 +5,21 @@ import camera as camera
 import cameracontrol as control
 import sys
 import requests
-import grip as grip
+import cv2
+from grip import grip as grip
+from scipy.interpolate import interp1d
 
 if len(sys.argv) == 2:
 	roborio_address = sys.argv[1]
 else:
 	roborio_address = "roborio-5024-frc.local"
 
-
+m = interp1d([300, 600], [0,1])
+m2 = interp1d([0,299], [-1,0])
 # check for roborio
 print("Checking for RoboRIO")
 try:
-	requests.get("http://" +roborio_address+":1181")
+	requests.get("http://" + roborio_address + ":1181")
 	print("Found!")
 except:
 	print("FATAL! Roborio not found or cameraserver disabled!")
@@ -25,7 +28,10 @@ except:
 # Init nt
 nt.init(roborio_address)
 camera.init(roborio_address)
+
+# init pipeline
 pipeline = grip.GripPipeline()
+
 
 # init vars
 last_mode = None
@@ -34,36 +40,55 @@ while True:
 	current_mode = nt.getMode()
 	
 	# Set camera settings
-	if current_mode != last_mode:
-		if current_mode == nt.robot_modes.sandstorm:
-			control.sandstorm()
-		elif current_mode == nt.robot_modes.teleop:
-			control.teleop()
+	# if current_mode != last_mode:
+	# 	if current_mode == nt.robot_modes.sandstorm:
+	# 		control.sandstorm()
+	# 	elif current_mode == nt.robot_modes.teleop:
+	# 		control.teleop()
 	
-	# skip if in sandstorm (the drivers need to see)
-	if current_mode == nt.robot_modes.sandstorm:
-		last_mode = current_mode
-		continue
+	# # skip if in sandstorm (the drivers need to see)
+	# if current_mode == nt.robot_modes.sandstorm:
+	# 	last_mode = current_mode
+	# 	continue
 	
 	# get frame
-	frame = camera.getFront()
+	front_frame = cv2.resize(camera.getFront(), (600,400))
+	# back_frame = camera.getBack()
+	
 	# parse through grip
-	pipeline.process(frame)
-	contours = pipeline.filter_contours_output
-	if (len(contours) == 2):
-		rect1 = cv2.minAreaRect(contours[0])
-		rect2 = cv2.minAreaRect(contours[1])
-		box1  = cv2.boxPoints(rect1)
-		box2  = cv2.boxPoints(rect2)
-		box1  = cv2.int0(box1)
-		box2  = cv2.int0(box2)
-		print(box2)
-	else:
-		continue
+	pipeline.process(front_frame)
+	
+	
 	# get data
+	cnts = pipeline.filter_contours_output
+	print(len(cnts))
+	try:
+		x1,_ = cv2.boxPoints(cv2.minAreaRect(cnts[0]))[0]
+		x2,_ = cv2.boxPoints(cv2.minAreaRect(cnts[1]))[0]
+	except:
+		if len(cnts) == 1 or False:
+			x1,_ = cv2.boxPoints(cv2.minAreaRect(cnts[0]))[0]
+			x2 = 0
+		else:
+			nt.publish(0.0,0.0)
+			continue
+	centre = (x1 + x2)/2
+	
+	if centre < 299 and centre > 1:
+		rotation = m2(centre)
+	elif centre < 600 and centre > 300:
+		rotation = m(centre)
+	
+	distance = (max(x1,x2) - min(x1,x2))
+	
 	
 	# do stuff
+	# cv2.imshow("Front Cam", front_frame)
+	# cv2.imshow("Back Cam", back_frame)
 	
 	#publish
+	nt.publish(rotation, distance)
+	# print(rotation, end="\r")
+	# print(centre)
 	
 	last_mode = current_mode
