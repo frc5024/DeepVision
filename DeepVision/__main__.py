@@ -68,9 +68,11 @@ while True:
 	centre = (x1 + x2)/2
 	
 	if centre < 299 and centre > 1:
-		motor = m2(centre)
+		rotation = m2(centre)
 	elif centre < 600 and centre > 300:
-		motor = m(centre)
+		rotation = m(centre)
+	
+	distance = (max(x1,x2) - min(x1,x2))
 	
 	
 	# do stuff
@@ -78,8 +80,8 @@ while True:
 	# cv2.imshow("Back Cam", back_frame)
 	
 	#publish
-	nt.publish(motor)
-	print(motor)
+	nt.publish(rotation, distance)
+	print(rotation)
 	# print(centre)
 	
 	last_mode = current_mode
