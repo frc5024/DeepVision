@@ -28,7 +28,7 @@ class GripPipeline:
         self.convex_hulls_output = None
 
         self.__filter_contours_contours = self.convex_hulls_output
-        self.__filter_contours_min_area = 40.0
+        self.__filter_contours_min_area = 50.0
         self.__filter_contours_min_perimeter = 0.0
         self.__filter_contours_min_width = 0.0
         self.__filter_contours_max_width = 1000.0
