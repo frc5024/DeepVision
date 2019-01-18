@@ -25,7 +25,7 @@ print("Checking for RoboRIO")
 
 
 #try:
-#	requests.get("http://" + roborio_address + ":1181")	
+#	requests.get("http://" + roborio_address + ":1181")
 #	print("Found!")
 #except:
 #	print("FATAL! Roborio not found or cameraserver disabled!")
@@ -42,6 +42,8 @@ camera.init(roborio_address)
 # init pipeline
 pipeline = grip.GripPipeline()
 
+# configure cameras
+control.setVisionMode()
 
 # init vars
 last_mode = None
@@ -54,17 +56,6 @@ degPerPixel = cameraWidth / fov
 while True:
 	current_mode = nt.getMode()
 	
-	# Set camera settings
-	# if current_mode != last_mode:
-	# 	if current_mode == nt.robot_modes.sandstorm:
-	# 		control.sandstorm()
-	# 	elif current_mode == nt.robot_modes.teleop:
-	# 		control.teleop()
-	
-	# # skip if in sandstorm (the drivers need to see)
-	# if current_mode == nt.robot_modes.sandstorm:
-	# 	last_mode = current_mode
-	# 	continue
 	
 	# get frame
 	front_frame = cv2.resize(camera.getFront(), (600,400))
