@@ -76,14 +76,14 @@ while True:
 	
 	# get data
 	cnts = pipeline.filter_contours_output
-	print(len(cnts))
+	
 	try:
 		x1,_ = cv2.boxPoints(cv2.minAreaRect(cnts[0]))[0]
 		x2,_ = cv2.boxPoints(cv2.minAreaRect(cnts[1]))[0]
 	except:
-		if len(cnts) == 1 or False:
+		if len(cnts) == 1:
 			x1,_ = cv2.boxPoints(cv2.minAreaRect(cnts[0]))[0]
-			x2 = 0
+			x2 = x1
 		else:
 			nt.publish(0.0,0.0)
 			continue
@@ -103,6 +103,7 @@ while True:
 	# cv2.imshow("Back Cam", back_frame)
 	
 	#publish
+	print(f"{angle} | {len(cnts)}")
 	nt.publish(angle*-1, angle*-1)
 	# print(rotation, end="\r")
 	# print(centre)
