@@ -12,9 +12,9 @@ class GripPipeline:
         """initializes all values to presets or None if need to be set
         """
 
-        self.__hsl_threshold_hue = [67.98561151079137, 100.13651877133105]
-        self.__hsl_threshold_saturation = [142.1762589928057, 255.0]
-        self.__hsl_threshold_luminance = [144.46942446043167, 255.0]
+        self.__hsl_threshold_hue = [63.129496402877706, 97.06484641638224]
+        self.__hsl_threshold_saturation = [220.14388489208633, 255.0]
+        self.__hsl_threshold_luminance = [16.052158273381295, 170.14505119453926]
 
         self.hsl_threshold_output = None
 
@@ -35,10 +35,10 @@ class GripPipeline:
         self.__filter_contours_min_height = 0.0
         self.__filter_contours_max_height = 1000.0
         self.__filter_contours_solidity = [0, 100]
-        self.__filter_contours_max_vertices = 1000000.0
-        self.__filter_contours_min_vertices = 0.0
+        self.__filter_contours_max_vertices = 15.0
+        self.__filter_contours_min_vertices = 4.0
         self.__filter_contours_min_ratio = 0.0
-        self.__filter_contours_max_ratio = 1000.0
+        self.__filter_contours_max_ratio = 2.0
 
         self.filter_contours_output = None
 
@@ -92,7 +92,7 @@ class GripPipeline:
         else:
             mode = cv2.RETR_LIST
         method = cv2.CHAIN_APPROX_SIMPLE
-        contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
+        im2, contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
         return contours
 
     @staticmethod
