@@ -12,9 +12,9 @@ class GripPipeline:
         """initializes all values to presets or None if need to be set
         """
 
-        self.__hsl_threshold_hue = [64.74820143884892, 86.31399317406141]
-        self.__hsl_threshold_saturation = [167.4010791366906, 255.0]
-        self.__hsl_threshold_luminance = [6.879496402877698, 170.14505119453926]
+        self.__hsl_threshold_hue = [61.51079136690648, 93.99317406143341]
+        self.__hsl_threshold_saturation = [192.62589928057554, 255.0]
+        self.__hsl_threshold_luminance = [50.44964028776978, 124.45392491467578]
 
         self.hsl_threshold_output = None
 
@@ -29,16 +29,16 @@ class GripPipeline:
 
         self.__filter_contours_contours = self.convex_hulls_output
         self.__filter_contours_min_area = 50.0
-        self.__filter_contours_min_perimeter = 0
-        self.__filter_contours_min_width = 0
-        self.__filter_contours_max_width = 1000
-        self.__filter_contours_min_height = 0
-        self.__filter_contours_max_height = 1000
+        self.__filter_contours_min_perimeter = 0.0
+        self.__filter_contours_min_width = 0.0
+        self.__filter_contours_max_width = 1000.0
+        self.__filter_contours_min_height = 0.0
+        self.__filter_contours_max_height = 1000.0
         self.__filter_contours_solidity = [0, 100]
-        self.__filter_contours_max_vertices = 1000000
-        self.__filter_contours_min_vertices = 0
-        self.__filter_contours_min_ratio = 0
-        self.__filter_contours_max_ratio = 1000
+        self.__filter_contours_max_vertices = 1000000.0
+        self.__filter_contours_min_vertices = 0.0
+        self.__filter_contours_min_ratio = 0.0
+        self.__filter_contours_max_ratio = 1000.0
 
         self.filter_contours_output = None
 
@@ -92,7 +92,7 @@ class GripPipeline:
         else:
             mode = cv2.RETR_LIST
         method = cv2.CHAIN_APPROX_SIMPLE
-        contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
+        im2, contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
         return contours
 
     @staticmethod
