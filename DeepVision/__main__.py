@@ -103,7 +103,7 @@ while True:
 	# cv2.imshow("Back Cam", back_frame)
 	
 	#publish
-	nt.publish(angle)
+	nt.publish(angle, angle)
 	# print(rotation, end="\r")
 	# print(centre)
 	
