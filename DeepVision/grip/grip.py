@@ -14,7 +14,7 @@ class GripPipeline:
 
         self.__hsl_threshold_hue = [61.51079136690648, 93.99317406143341]
         self.__hsl_threshold_saturation = [192.62589928057554, 255.0]
-        self.__hsl_threshold_luminance = [50.44964028776978, 124.45392491467578]
+        self.__hsl_threshold_luminance = [36.690647482014384, 124.45392491467578]
 
         self.hsl_threshold_output = None
 
@@ -92,7 +92,7 @@ class GripPipeline:
         else:
             mode = cv2.RETR_LIST
         method = cv2.CHAIN_APPROX_SIMPLE
-        im2, contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
+        contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
         return contours
 
     @staticmethod
