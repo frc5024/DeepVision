@@ -17,4 +17,4 @@ Make sure you have python 3.7 installed and grip uses an older version of grip
 
 parsa-salimi \
 retrax24 \
-ewpratten \
+ewpratten
