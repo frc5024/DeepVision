@@ -1,60 +1,68 @@
 print("Starting DeepVision")
 
-import nt as nt
+import tnt as nt
 import camera as camera
-import cameracontrol as control
 import sys
 import requests
+from cv2 import *
+from grip import grip as grip
+from scipy.interpolate import interp1d
 
 if len(sys.argv) == 2:
-	roborio_address = sys.argv[1]
+    roborio_address = sys.argv[1]
 else:
-	roborio_address = "http://roborio-5024-frc.local:1181"
+    roborio_address = "10.50.24.2"
 
-# Check for frameserver
-print("Checking for frameserver...")
-try:
-	requests.get("http://127.0.0.1/getframe.php")
-except:
-	print("FATAL! frameserver not found!")
-	exit(1)
+# Boring math ahead --> interpolate one dimension from sci-py
+m = interp1d([300, 600], [0, 1])
+m2 = interp1d([0, 299], [-1, 0])
 
-# check for roborio
-try:
-	requests.get(roborio_address)
-except:
-	print("FATAL! Roborio not found or cameraserver disabled!")
-	exit(1)
+# Find me that Robo-RIO!!
+print("Checking for RoboRIO")
 
-# Init nt
-nt.init()
+# Init Network Tables
+nt.init(roborio_address)
+camera.init(roborio_address)
 
-# init vars
-last_mode
+# Initializing GRIP pipeline(boop, beep)
+pipeline = grip.GripPipeline()
+
+# Init vars for Calculations in while loop
+cameraWidth = 600
+fov = 60
+degPerPixel = cameraWidth / fov
 
 while True:
-	current_mode = nt.getMode()
-	
-	# Set camera settings
-	if current_mode != last_mode:
-		if current_mode == nt.robot_mode.sandstorm:
-			control.sandstorm()
-		elif current_mode == nt.robot_mode.teleop:
-			control.teleop()
-	
-	# skip if in sandstorm (the drivers need to see)
-	if current_mode == nt.robot_mode.sandstorm:
-		last_mode = current_mode
-		continue
-	
-	# get frame
-	
-	# parse through grip
-	
-	# get data
-	
-	# do stuff
-	
-	#publish
-	
-	last_mode = current_mode
+
+    # Get frame from front camera
+    front_frame = cv2.resize(camera.getFront(), (600, 400))
+
+    # Parse grip profile
+    pipeline.process(front_frame)
+
+    # C is for contours and contours are for me
+    cookies = pipeline.filter_contours_output
+
+    try:
+        x1, _ = cv2.boxPoints(cv2.minAreaRect(cookies[0]))[0]
+        x2, _ = cv2.boxPoints(cv2.minAreaRect(cookies[1]))[0]
+    except:
+        if len(cookies) == 1:
+            x1, _ = cv2.boxPoints(cv2.minAreaRect(cookies[0]))[0]
+            x2 = x1
+        else:
+            nt.publish(0.0, 0.0)
+            continue
+
+    ''' Math to find the center of 2 contours then use
+	their center to calculate the center of those'''
+    centre = (x1 + x2) / 2
+    displacement = cameraWidth / 2 - centre
+    angle = displacement / degPerPixel
+    distance = (max(x1, x2) - min(x1, x2))
+
+    # Print to console {TESTING}
+    print(f"{angle} | {len(cookies)}")
+
+    # Publish to networks tables.
+    nt.publish(angle * -1, angle * -1)
