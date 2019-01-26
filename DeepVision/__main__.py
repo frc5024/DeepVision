@@ -1,5 +1,11 @@
+''' 
+    FRC 2018-19 Deep Space Challenge
+    Automatic Contour Collection and Analysis (ACCA)
+'''
+
 print("Starting DeepVision")
 
+# All the good stuffs 
 import tnt as nt
 import camera as camera
 import sys
@@ -8,13 +14,15 @@ from cv2 import *
 from grip import grip as grip
 from scipy.interpolate import interp1d
 
+
 if len(sys.argv) == 2:
     roborio_address = sys.argv[1]
 else:
     roborio_address = "10.50.24.2"
+    # [ROBO_RIO ADDRESS HERE ^]
 
 # Boring math ahead --> interpolate one dimension from sci-py
-m = interp1d([300, 600], [0, 1])
+m1  = interp1d([300, 600], [0, 1])
 m2 = interp1d([0, 299], [-1, 0])
 
 # Find me that Robo-RIO!!
@@ -29,7 +37,7 @@ pipeline = grip.GripPipeline()
 
 # Init vars for Calculations in while loop
 cameraWidth = 600
-fov = 60
+fov         = 60
 degPerPixel = cameraWidth / fov
 
 while True:
@@ -49,17 +57,17 @@ while True:
     except:
         if len(cookies) == 1:
             x1, _ = cv2.boxPoints(cv2.minAreaRect(cookies[0]))[0]
-            x2 = x1
+            x2    = x1
         else:
             nt.publish(0.0, 0.0)
             continue
 
     ''' Math to find the center of 2 contours then use
 	their center to calculate the center of those'''
-    centre = (x1 + x2) / 2
+    centre       = (x1 + x2) / 2
     displacement = cameraWidth / 2 - centre
-    angle = displacement / degPerPixel
-    distance = (max(x1, x2) - min(x1, x2))
+    angle        = displacement / degPerPixel
+    distance     = (max(x1, x2) - min(x1, x2))
 
     # Print to console {TESTING}
     print(f"{angle} | {len(cookies)}")

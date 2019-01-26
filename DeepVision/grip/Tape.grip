@@ -102,7 +102,7 @@
     <language>Python</language>
     <className>GripPipeline</className>
     <implementWpilibPipeline>false</implementWpilibPipeline>
-    <saveDir>C:\Users\retra\GRIP</saveDir>
+    <saveDir>D:\Projects\Vision\DeepVision\grip</saveDir>
     <packageName></packageName>
     <moduleName>grip</moduleName>
   </codeGenerationSettings>

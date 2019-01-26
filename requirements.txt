@@ -1,4 +1,4 @@
-pynetworktables
+pynetworktables==2019.0.0
 opencv-python==3.4.3.18
-requests
-scipy
+requests==2.21.0
+scipy==1.2.0

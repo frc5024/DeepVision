@@ -1,7 +1,7 @@
-"""
-Camera.py
-	Camera object for the DeepVision
-"""
+''' 
+    FRC 2018-19 Deep Space Challenge
+    Automatic Contour Collection and Analysis (ACCA)
+'''
 
 import cv2
 
