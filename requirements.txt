@@ -1,3 +1,4 @@
 pynetworktables
-opencv-python
+opencv-python==3.4.3.18
 requests
+scipy
