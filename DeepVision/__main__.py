@@ -1,11 +1,11 @@
-''' 
+'''
     FRC 2018-19 Deep Space Challenge
     Automatic Contour Collection and Analysis (ACCA)
 '''
 
 print("Starting DeepVision")
 
-# All the good stuffs 
+# All the good stuffs
 import tnt as nt
 import camera as camera
 import sys
@@ -43,7 +43,10 @@ degPerPixel = cameraWidth / fov
 while True:
 
     # Get frame from front camera
-    front_frame = cv2.resize(camera.getFront(), (600, 400))
+    isframe, front_frame = camera.getFront()
+    if not isframe:
+    	continue
+    front_frame = cv2.resize(front_frame, (600, 400))
 
     # Parse grip profile
     pipeline.process(front_frame)
@@ -67,10 +70,10 @@ while True:
     centre       = (x1 + x2) / 2
     displacement = cameraWidth / 2 - centre
     angle        = displacement / degPerPixel
-    distance     = (max(x1, x2) - min(x1, x2))
+    # distance     = (max(x1, x2) - min(x1, x2))
 
     # Print to console {TESTING}
-    print(f"{angle} | {len(cookies)}")
+    print(f"{angle} | {len(cookies)}                         ", end="\r")
 
     # Publish to networks tables.
     nt.publish(angle * -1, angle * -1)

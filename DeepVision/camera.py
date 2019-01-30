@@ -1,4 +1,4 @@
-''' 
+'''
     FRC 2018-19 Deep Space Challenge
     Automatic Contour Collection and Analysis (ACCA)
 '''
@@ -20,7 +20,7 @@ def init(ip):
 def getFront():
     global front_cam
     ret_val, frame = front_cam.read()
-    return frame
+    return ret_val, frame
 
 
 # Back camera functions
