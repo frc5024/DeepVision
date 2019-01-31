@@ -70,10 +70,10 @@ while True:
     centre       = (x1 + x2) / 2
     displacement = cameraWidth / 2 - centre
     angle        = displacement / degPerPixel
-    # distance     = (max(x1, x2) - min(x1, x2))
+    distance     = abs(int(x2 - x1))
 
     # Print to console {TESTING}
-    print(f"{angle} | {len(cookies)}                         ", end="\r")
+    print(f"{distance} | {len(cookies)}                         ", end="\r")
 
     # Publish to networks tables.
     nt.publish(angle * -1, angle * -1)

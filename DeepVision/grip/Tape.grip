@@ -1,93 +1,101 @@
-<grip:Pipeline>
+<edu.wpi.grip.core.Pipeline>
   <sources>
-    <grip:Camera>
+    <edu.wpi.grip.core.sources.CameraSource>
       <property name="address" value="http://10.50.24.2:1182/stream.mjpg"/>
-    </grip:Camera>
+    </edu.wpi.grip.core.sources.CameraSource>
   </sources>
   <steps>
-    <grip:Step name="HSV Threshold">
-      <grip:Input step="0" socket="0"/>
-      <grip:Input step="0" socket="1">
+    <edu.wpi.grip.core.Step name="HSV Threshold">
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="0" socket="0"/>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="0" socket="1">
         <value>
-          <double>33.99280575539568</double>
-          <double>69.419795221843</double>
+          <double>38.84892086330935</double>
+          <double>70.9556313993174</double>
         </value>
-      </grip:Input>
-      <grip:Input step="0" socket="2">
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="0" socket="2">
         <value>
-          <double>194.91906474820144</double>
+          <double>222.43705035971223</double>
           <double>255.0</double>
         </value>
-      </grip:Input>
-      <grip:Input step="0" socket="3">
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="0" socket="3">
         <value>
           <double>119.24460431654676</double>
           <double>255.0</double>
         </value>
-      </grip:Input>
-      <grip:Output step="0" socket="0" previewed="true"/>
-    </grip:Step>
-    <grip:Step name="Find Contours">
-      <grip:Input step="1" socket="0"/>
-      <grip:Input step="1" socket="1">
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.OutputSocketImpl step="0" socket="0" previewed="true"/>
+    </edu.wpi.grip.core.Step>
+    <edu.wpi.grip.core.Step name="Find Contours">
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="1" socket="0"/>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="1" socket="1">
         <value>false</value>
-      </grip:Input>
-      <grip:Output step="1" socket="0" previewed="true"/>
-    </grip:Step>
-    <grip:Step name="Filter Contours">
-      <grip:Input step="2" socket="0"/>
-      <grip:Input step="2" socket="1">
-        <value>20.0</value>
-      </grip:Input>
-      <grip:Input step="2" socket="2">
-        <value>0</value>
-      </grip:Input>
-      <grip:Input step="2" socket="3">
-        <value>0</value>
-      </grip:Input>
-      <grip:Input step="2" socket="4">
-        <value>1000</value>
-      </grip:Input>
-      <grip:Input step="2" socket="5">
-        <value>0</value>
-      </grip:Input>
-      <grip:Input step="2" socket="6">
-        <value>1000</value>
-      </grip:Input>
-      <grip:Input step="2" socket="7">
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.OutputSocketImpl step="1" socket="0" previewed="true"/>
+    </edu.wpi.grip.core.Step>
+    <edu.wpi.grip.core.Step name="Filter Contours">
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="2" socket="0"/>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="2" socket="1">
+        <value>10.0</value>
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="2" socket="2">
+        <value>0.0</value>
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="2" socket="3">
+        <value>0.0</value>
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="2" socket="4">
+        <value>1000.0</value>
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="2" socket="5">
+        <value>0.0</value>
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="2" socket="6">
+        <value>1000.0</value>
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="2" socket="7">
         <value>
           <int>0</int>
           <int>100</int>
         </value>
-      </grip:Input>
-      <grip:Input step="2" socket="8">
-        <value>1000000</value>
-      </grip:Input>
-      <grip:Input step="2" socket="9">
-        <value>0</value>
-      </grip:Input>
-      <grip:Input step="2" socket="10">
-        <value>0</value>
-      </grip:Input>
-      <grip:Input step="2" socket="11">
-        <value>1000</value>
-      </grip:Input>
-      <grip:Output step="2" socket="0" previewed="true"/>
-    </grip:Step>
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="2" socket="8">
+        <value>1000000.0</value>
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="2" socket="9">
+        <value>0.0</value>
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="2" socket="10">
+        <value>0.0</value>
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="2" socket="11">
+        <value>1000.0</value>
+      </edu.wpi.grip.core.sockets.InputSocketImpl>
+      <edu.wpi.grip.core.sockets.OutputSocketImpl step="2" socket="0" previewed="false"/>
+    </edu.wpi.grip.core.Step>
+    <edu.wpi.grip.core.Step name="Convex Hulls">
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="3" socket="0"/>
+      <edu.wpi.grip.core.sockets.OutputSocketImpl step="3" socket="0" previewed="true"/>
+    </edu.wpi.grip.core.Step>
   </steps>
   <connections>
-    <grip:Connection>
-      <grip:Output step="1" socket="0" previewed="true"/>
-      <grip:Input step="2" socket="0"/>
-    </grip:Connection>
-    <grip:Connection>
-      <grip:Output step="0" socket="0" previewed="true"/>
-      <grip:Input step="1" socket="0"/>
-    </grip:Connection>
-    <grip:Connection>
-      <grip:Output source="0" socket="0" previewed="true"/>
-      <grip:Input step="0" socket="0"/>
-    </grip:Connection>
+    <edu.wpi.grip.core.Connection>
+      <edu.wpi.grip.core.sockets.OutputSocketImpl source="0" socket="0" previewed="true"/>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="0" socket="0"/>
+    </edu.wpi.grip.core.Connection>
+    <edu.wpi.grip.core.Connection>
+      <edu.wpi.grip.core.sockets.OutputSocketImpl step="0" socket="0" previewed="true"/>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="1" socket="0"/>
+    </edu.wpi.grip.core.Connection>
+    <edu.wpi.grip.core.Connection>
+      <edu.wpi.grip.core.sockets.OutputSocketImpl step="2" socket="0" previewed="false"/>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="3" socket="0"/>
+    </edu.wpi.grip.core.Connection>
+    <edu.wpi.grip.core.Connection>
+      <edu.wpi.grip.core.sockets.OutputSocketImpl step="1" socket="0" previewed="true"/>
+      <edu.wpi.grip.core.sockets.InputSocketImpl step="2" socket="0"/>
+    </edu.wpi.grip.core.Connection>
   </connections>
   <settings>
     <teamNumber>0</teamNumber>
@@ -99,11 +107,11 @@
     <deployJvmOptions>-Xmx50m -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:MaxNewSize=16m</deployJvmOptions>
   </settings>
   <codeGenerationSettings>
-    <language>Python</language>
+    <language>Java</language>
     <className>GripPipeline</className>
     <implementWpilibPipeline>false</implementWpilibPipeline>
-    <saveDir>D:\Projects\Vision\DeepVision\grip</saveDir>
+    <saveDir>C:\Users\Raider Robotics\Documents\DeepVision\DeepVision</saveDir>
     <packageName></packageName>
     <moduleName>grip</moduleName>
   </codeGenerationSettings>
-</grip:Pipeline>
+</edu.wpi.grip.core.Pipeline>
