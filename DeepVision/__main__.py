@@ -36,7 +36,7 @@ camera.init(roborio_address)
 pipeline = grip.GripPipeline()
 
 # Init vars for Calculations in while loop
-cameraWidth = 600
+cameraWidth = 160
 fov         = 60
 degPerPixel = cameraWidth / fov
 
@@ -46,20 +46,25 @@ while True:
     isframe, front_frame = camera.getFront()
     if not isframe:
     	continue
-    front_frame = cv2.resize(front_frame, (600, 400))
 
     # Parse grip profile
     pipeline.process(front_frame)
 
     # C is for contours and contours are for me
     cookies = pipeline.filter_contours_output
+    test = lambda x: x[0]
+
 
     try:
-        x1, _ = cv2.boxPoints(cv2.minAreaRect(cookies[0]))[0]
-        x2, _ = cv2.boxPoints(cv2.minAreaRect(cookies[1]))[0]
+        bx1sort = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[0])),key=test)
+        bx2sort = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[1])),key=test)
+        x1, _ = bx1sort[3]
+        x2, _ = bx2sort[0]
+        
     except:
         if len(cookies) == 1:
-            x1, _ = cv2.boxPoints(cv2.minAreaRect(cookies[0]))[0]
+            bx1sort = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[0])),key=test)
+            x1, _ = bx1sort[1]
             x2    = x1
         else:
             nt.publish(0.0, 0.0)
@@ -70,10 +75,25 @@ while True:
     centre       = (x1 + x2) / 2
     displacement = cameraWidth / 2 - centre
     angle        = displacement / degPerPixel
-    distance     = abs(int(x2 - x1))
+    widthpx     = abs(int(x2 - x1))
+    #focal length = width(in px) * distance / width(inches)
+    #distance(32) was measured manually
+    #8 is distance between 2 closest points, found in game manual
+    measuredwidthpx = 77
+    widthinch = 8
+    measureddistance = 32
+    flength = measuredwidthpx * measureddistance / widthinch
+    #d' = w(inches) * focal length / w(pixels)
+    if (widthpx > 0):
+        distance = widthinch * flength / widthpx
+    else:
+        distance = 0
 
     # Print to console {TESTING}
-    print(f"{distance} | {len(cookies)}                         ", end="\r")
+    temp = cv2.boxPoints(cv2.minAreaRect(cookies[0]))
+    print(f"1:{distance}           ", end="\r")
+  
+
 
     # Publish to networks tables.
     nt.publish(angle * -1, angle * -1)
