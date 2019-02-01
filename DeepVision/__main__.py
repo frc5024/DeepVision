@@ -79,9 +79,9 @@ while True:
     #focal length = width(in px) * distance / width(inches)
     #distance(32) was measured manually
     #8 is distance between 2 closest points, found in game manual
-    measuredwidthpx = 77
+    measuredwidthpx = 35
     widthinch = 8
-    measureddistance = 32
+    measureddistance = 42
     flength = measuredwidthpx * measureddistance / widthinch
     #d' = w(inches) * focal length / w(pixels)
     #so that we don't divide by zero
@@ -93,7 +93,7 @@ while True:
 
     # Print to console {TESTING}
     temp = cv2.boxPoints(cv2.minAreaRect(cookies[0]))
-    print(f"1:{distance}           ", end="\r")
+    print(f"1:{distance}| {widthpx}         ", end="\r")
   
 
 
