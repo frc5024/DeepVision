@@ -84,8 +84,10 @@ while True:
     measureddistance = 32
     flength = measuredwidthpx * measureddistance / widthinch
     #d' = w(inches) * focal length / w(pixels)
+    #so that we don't divide by zero
     if (widthpx > 0):
-        distance = widthinch * flength / widthpx
+        #2.54 because we need to convert to cm
+        distance = (widthinch * flength / widthpx)
     else:
         distance = 0
 
