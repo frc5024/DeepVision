@@ -52,21 +52,28 @@ while True:
 
     # C is for contours and contours are for me
     cookies = pipeline.filter_contours_output
+
+    # lambda functions, that select first and second elemets of a tuple        
     l1 = lambda x: x[0]
     l2 = lambda x: x[1]
 
-
+    # Sorting the array of corners into the top-inside vertex.
     try:
+        # Sort points of both boxes vertically      
         bx1vert = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[0])),key=l2)
         bx2vert = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[1])),key=l2)
+
+        # Choose both first and second elements of both
         x1t1, _ = bx1vert[0]
         x1t2, _ = bx1vert[1]
 
         x2t1, _ = bx2vert[0]
         x2t2, _ = bx2vert[1]
 
+        # This essentially accounts for errors: from the highest two points, choose the one with
+        # the bigger x value
         if(x1t1 > x1t2):
-            x1 = x1t1
+            x1 = x1t1s
         else:
             x1 = x1t2
         if(x2t1 > x2t2):
@@ -84,32 +91,36 @@ while True:
             nt.publish(0.0, 0.0)
             continue
 
-    ''' Math to find the center of 2 contours then use
-	their center to calculate the center of those'''
+    # Math to find the center of 2 contours then use their center to calculate the center of those
+
     centre       = (x1 + x2) / 2
     displacement = cameraWidth / 2 - centre
     angle        = displacement / degPerPixel
-    widthpx     = abs(int(x2 - x1))
-    #focal length = width(in px) * distance / width(inches)
-    #distance(32) was measured manually
-    #8 is distance between 2 closest points, found in game manual
-    measuredwidthpx = 35
-    widthinch = 8
+    widthpx      = abs(int(x2 - x1))
+
+    # Focal length = width(in px) * distance / width(inches)
+    # distance() was measured manually
+
+    # 8 is distance between 2 closest points, found in game manual
+
+    # Calibration measurements (coding)
+    measuredwidthpx = 43
+    widthinch = 9
     measureddistance = 42
+    
     flength = measuredwidthpx * measureddistance / widthinch
-    #d' = w(inches) * focal length / w(pixels)
-    #so that we don't divide by zero
+
+    # So that we don't divide by zero and kill the entire planet
     if (widthpx > 0):
-        #2.54 because we need to convert to cm
+
+    
         distance = (widthinch * flength / widthpx)
     else:
         distance = 0
 
     # Print to console {TESTING}
     temp = cv2.boxPoints(cv2.minAreaRect(cookies[0]))
-    print(f"1:{distance}| {widthpx}         ", end="\r")
-  
-
+    print(distance)
 
     # Publish to networks tables.
     nt.publish(angle * -1, angle * -1)
