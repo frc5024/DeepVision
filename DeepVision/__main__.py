@@ -52,18 +52,32 @@ while True:
 
     # C is for contours and contours are for me
     cookies = pipeline.filter_contours_output
-    test = lambda x: x[0]
+    l1 = lambda x: x[0]
+    l2 = lambda x: x[1]
 
 
     try:
-        bx1sort = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[0])),key=test)
-        bx2sort = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[1])),key=test)
-        x1, _ = bx1sort[3]
-        x2, _ = bx2sort[0]
+        bx1vert = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[0])),key=l2)
+        bx2vert = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[1])),key=l2)
+        x1t1, _ = bx1vert[0]
+        x1t2, _ = bx1vert[1]
+
+        x2t1, _ = bx2vert[0]
+        x2t2, _ = bx2vert[1]
+
+        if(x1t1 > x1t2):
+            x1 = x1t1
+        else:
+            x1 = x1t2
+        if(x2t1 > x2t2):
+            x2 = x2t1
+        else:
+            x2 = x2t2
+
         
     except:
         if len(cookies) == 1:
-            bx1sort = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[0])),key=test)
+            bx1sort = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[0])),key=l1)
             x1, _ = bx1sort[1]
             x2    = x1
         else:
