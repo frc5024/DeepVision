@@ -13,6 +13,7 @@ import requests
 from cv2 import *
 from grip import grip as grip
 from scipy.interpolate import interp1d
+import math
 
 
 if len(sys.argv) == 2:
@@ -57,6 +58,7 @@ while True:
     l1 = lambda x: x[0]
     l2 = lambda x: x[1]
 
+
     # Sorting the array of corners into the top-inside vertex.
     try:
         # Sort points of both boxes vertically      
@@ -73,7 +75,7 @@ while True:
         # This essentially accounts for errors: from the highest two points, choose the one with
         # the bigger x value
         if(x1t1 > x1t2):
-            x1 = x1t1s
+            x1 = x1t1
         else:
             x1 = x1t2
         if(x2t1 > x2t2):
@@ -84,8 +86,8 @@ while True:
         
     except:
         if len(cookies) == 1:
-            bx1sort = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[0])),key=l1)
-            x1, _ = bx1sort[1]
+            bx1vert = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[0])),key=l2)
+            x1, _ = bx1vert[1]
             x2    = x1
         else:
             nt.publish(0.0, 0.0)
@@ -94,7 +96,7 @@ while True:
     # Math to find the center of 2 contours then use their center to calculate the center of those
 
     centre       = (x1 + x2) / 2
-    displacement = cameraWidth / 2 - centre
+    displacement = (cameraWidth-1) / 2 - centre
     angle        = displacement / degPerPixel
     widthpx      = abs(int(x2 - x1))
 
@@ -107,20 +109,26 @@ while True:
     measuredwidthpx = 43
     widthinch = 9
     measureddistance = 42
-    
     flength = measuredwidthpx * measureddistance / widthinch
+
+    #a new method to find angle
+    angle2 = math.degrees(math.atan(displacement/ flength))
+
+
 
     # So that we don't divide by zero and kill the entire planet
     if (widthpx > 0):
-
-    
         distance = (widthinch * flength / widthpx)
+        #measuring the z value
+        zpx = centre
+        pxtoinch = widthinch / widthpx
+        zinch = zpx * pxtoinch
     else:
         distance = 0
+        zinch = 0
 
     # Print to console {TESTING}
-    temp = cv2.boxPoints(cv2.minAreaRect(cookies[0]))
-    print(distance)
+    print(f" {angle}  ")
 
     # Publish to networks tables.
-    nt.publish(angle * -1, angle * -1)
+    nt.publish(angle * -1, angle2 * -1)
