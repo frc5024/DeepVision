@@ -142,7 +142,7 @@ front_cam = None
 back_cam = None
 
 
-#Camera
+# camera.py
 
 def camerainit(ip):
     global front_cam
@@ -164,9 +164,6 @@ def cameragetBack():
     ret_val, frame = back_cam.read()
     return frame
 
-
-#nt
-
 robot_modes = Enum("Mode", "sandstorm teleop")
 
 vision_table = None
@@ -179,7 +176,8 @@ def ntinit(ip):
 
 def ntpublish(rotation, distance):
 	global vision_table
-	## publish the data
+
+	# Publish the data
 	vision_table.putNumber("angle 1", rotation)
 	vision_table.putNumber("angle 2", distance)
 
@@ -189,12 +187,8 @@ def ntgetMode():
 	else:
 		return robot_modes.sandstorm
 
-       
+# __main__.py
 
-
-
-
-#MAIN.PY
 print("Starting DeepVision")
 if len(sys.argv) == 2:
     roborio_address = sys.argv[1]
@@ -203,20 +197,25 @@ else:
     # [ROBO_RIO ADDRESS HERE ^]
 
 # Boring math ahead --> interpolate one dimension from sci-py
+
 m1  = interp1d([300, 600], [0, 1])
 m2 = interp1d([0, 299], [-1, 0])
 
 # Find me that Robo-RIO!!
+
 print("Checking for RoboRIO")
 
 # Init Network Tables
+
 ntinit(roborio_address)
 camerainit(roborio_address)
 
 # Initializing GRIP pipeline(boop, beep)
+
 pipeline = grip.GripPipeline()
 
 # Init vars for Calculations in while loop
+
 cameraWidth = 160
 fov         = 60
 degPerPixel = cameraWidth / fov
@@ -224,28 +223,34 @@ degPerPixel = cameraWidth / fov
 while True:
 
     # Get frame from front camera
+
     isframe, front_frame = cameragetFront()
     if not isframe:
     	continue
 
     # Parse grip profile
+
     pipeline.process(front_frame)
 
     # C is for contours and contours are for me
+
     cookies = pipeline.filter_contours_output
 
-    # lambda functions, that select first and second elemets of a tuple        
+    # Lambda functions, that select first and second elemets of a tuple        
     l1 = lambda x: x[0]
     l2 = lambda x: x[1]
 
 
     # Sorting the array of corners into the top-inside vertex.
+    
     try:
-        # Sort points of both boxes vertically      
+        # Sort points of both boxes vertically
+            
         bx1vert = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[0])),key=l2)
         bx2vert = sorted(cv2.boxPoints(cv2.minAreaRect(cookies[1])),key=l2)
 
         # Choose both first and second elements of both
+
         x1t1, _ = bx1vert[0]
         x1t2, _ = bx1vert[1]
 
@@ -254,6 +259,7 @@ while True:
 
         # This essentially accounts for errors: from the highest two points, choose the one with
         # the bigger x value
+
         if(x1t1 > x1t2):
             x1 = x1t1
         else:
@@ -286,20 +292,25 @@ while True:
     # 8 is distance between 2 closest points, found in game manual
 
     # Calibration measurements (coding)
+
     measuredwidthpx = 43
     widthinch = 9
     measureddistance = 42
     flength = measuredwidthpx * measureddistance / widthinch
 
-    #a new method to find angle
+    # A new method to find angle
+
     angle2 = math.degrees(math.atan(displacement/ flength))
 
 
 
     # So that we don't divide by zero and kill the entire planet
+
     if (widthpx > 0):
         distance = (widthinch * flength / widthpx)
-        #measuring the z value
+
+        # Measuring the z value
+
         zpx = centre
         pxtoinch = widthinch / widthpx
         zinch = zpx * pxtoinch
@@ -308,7 +319,9 @@ while True:
         zinch = 0
 
     # Print to console {TESTING}
+
     print(f" {angle}  ")
 
     # Publish to networks tables.
+    
     ntpublish(angle * -1, angle2 * -1)
