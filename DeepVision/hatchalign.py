@@ -24,7 +24,7 @@ def main():
     ap.add_argument("-l", "--height", type=int, default=240, help="set height of the frame")
     ap.add_argument("-d", "--display", type=int, default=1, help="stream to dashboard")
     ap.add_argument("-n", "--num_frames", type=int, default=300000, help="test frame rate with set number of frames")
-    ap.add_argument("-a", "--address", default="10.50.24.2", help="ip address to send the streams"
+    ap.add_argument("-a", "--address", default="10.50.24.2", help="ip address to send the streams")
     args = vars(ap.parse_args())
 
     # setup up logging
