@@ -18,7 +18,7 @@ outputStreamStd = None
 height = 480
 width = 640
 
-cutoff = 50
+cutoff = 100
 
 source = np.zeros(shape=(height, width, 3), dtype=np.uint8)
 output = np.zeros(shape=(height, width, 3), dtype=np.uint8)
@@ -56,13 +56,22 @@ def run():
 
 
     if time == 0:
-        outputStreamStd.notifyError(cvsink.getError())
+        # outputStreamStd.notifyError(cvsink.getError())
         return
-        
+    # cv2.cvtColor(source, output, cv2.COLOR_BGR2GRAY)
+
+    # hsv = cv2.cvtColor(source, cv2.COLOR_BGR2HSV)
+
+    # lower_green = np.array([0, 89, 190])
+    # upper_green = np.array([180, 255, 255])
+
+    # mask = cv2.inRange(hsv, lower_green, upper_green)
+
+    # res = cv2.bitwise_and(source, source, mask=mask)
     output = source
 
     # Convert to hsl
-    hsl=  cv2.cvtColor(source, cv2.COLOR_BGR2HLS)
+    hsl = cv2.cvtColor(source, cv2.COLOR_BGR2HLS)
 
     # Green
     # 35 0   50
@@ -93,7 +102,7 @@ def run():
         x, y, w, h = box
         if w+h < cutoff:
             continue
-        cv2.rectangle(output, (x, y), (x + w, y + h), (0, 0, 0), 5)
+        cv2.rectangle(output, (x, y), (x + w, y + h), (0, 0, 230), 5)
     
     # Draw line and target
     if len(boxes) >= 2:
@@ -110,6 +119,7 @@ def run():
 
 
     # Display time in bottom left
+    # clock = str(datetime.timedelta(seconds=pytime.time())).split(", ")[1].split(".")[0]
     clock = pytime.strftime("%I:%M:%S")
     cv2.putText(output, clock, (10, height - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
     
@@ -126,7 +136,6 @@ if __name__ == "__main__":
 
     config = json.load(open(config_path))
     init(config["cameras"][0])
-    print("Webserver is now open on ports 1181 and 1182")
 
     while True:
         run()
